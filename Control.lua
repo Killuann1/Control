@@ -674,13 +674,13 @@ local function toggleGUIVisibility()
     ScreenGui.Enabled = _G.GUIVisible
     
     if _G.GUIVisible then
-        -- GUI стал видимым, включаем скрипты
-        -- Но только если они не были явно отключены пользователем
-        -- Это сохраняет состояние кнопок "Включить/Отключить"
-        -- При первом запуске или когда GUI был скрыт, они будут включены
-        if not wasVisible then -- Только если GUI был скрыт и теперь показывается
-            _G.Disabled = false
-            _G.SpeedEnabled = true
+        -- GUI стал видимым
+        -- В этом блоке происходит автоматическое включение функций, которые вам не нужны
+        -- *** ЭТИ СТРОКИ НУЖНО ЗАКОММЕНТИРОВАТЬ ИЛИ УДАЛИТЬ ***
+        if not wasVisible then
+            -- _G.Disabled = false -- Включаем хитбоксы по умолчанию
+            -- _G.SpeedEnabled = true -- Включаем скорость по умолчанию
+            -- _G.EspEnabled = false -- Оставляем ESP выключенным по умолчанию
         end
     else
         -- GUI стал невидимым, отключаем скрипты и сбрасываем состояние
@@ -720,7 +720,8 @@ updateToggleHitboxButton()
 updateToggleSpeedButton()
 updateScriptConnection() -- Инициализируем соединение для хитбоксов
 updateHitboxSliderKnobPosition()
-updateSpeedSliderKnobPosition() -- Инициализируем ползунок скорости
+updateSpeedSliderKnobPosition()
+-- Здесь также можно добавить вызов updateESPConnection() и updateToggleESPButton(), если ESP уже добавлен в скрипт и вам нужно его инициализировать при запуске.
 
 -- Соединение для события "CharacterAdded" для LocalPlayer
 LocalPlayer.CharacterAdded:Connect(function(character)
@@ -789,7 +790,7 @@ end
 -- Обработчик AncestryChanged для ScreenGui.
 -- Поскольку ResetOnSpawn = false, скрипт не будет перезапускаться.
 if not ScreenGui:GetAttribute("AncestryChangedConnected") then
-    ScreenGui:SetAttribute("AncestryChangedConnected", true)
+    ScreenGui:SetAttribute("Connected", true)
     ScreenGui.AncestryChanged:Connect(function()
         if not ScreenGui.Parent then
             _G.Disabled = true
